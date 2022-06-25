@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Logs Page";
+}
+@model LogFinderModel
+
+<div class="center-content">
+    <form method="get" asp-action="GetLog">
+        <strong><label asp-for="UserID" style="color:cornflowerblue"></label></strong>
+        <input asp-for="UserID" placeholder="Id пользователя" class="form-control form-control-lg"/>
+
+        <strong><label asp-for="Type" style="color:cornflowerblue"></label></strong>
+        <select asp-for="Type" asp-items="Html.GetEnumSelectList<LogTypes.LogType>()" class="form-control form-control-lg"></select>
+
+        <strong><label asp-for="Date" style="color:cornflowerblue"></label></strong>
+        <input asp-for="Date" type="date" placeholder="Дата" class="form-control form-control-lg"/>
+
+        <br />
+
+        <button type="submit" class="btn btn-primary">Найти</button>
+    </form>
+</div>
+
+<hr style="color:cornflowerblue" size="7" noshade />
+
+<div class="center-content-1">
+    @if (ViewBag.LogView is not null)
+    {
+        @foreach (Log log in ViewBag.LogView)
+        {
+            <div style="text-align:left">
+                <span style="color:cornsilk">[@DateTimeOffset.FromUnixTimeSeconds(log.CreatedAt).ToString("G")]</span>: 
+                @log.UserName (Id @log.UserId): @log.Message (<span style="color:darksalmon">@log.Type</span>)
+                <br />
+            </div>
+        }
+    }
+    else
+    {
+        <h1 class="center-form">Не найдено</h1>
+    }
+</div>
+
+
+
